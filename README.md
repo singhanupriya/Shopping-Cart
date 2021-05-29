@@ -6,8 +6,8 @@ Functionalities:
 - Create Customers
 - Create Products
 - Build with Cart:
-	> Add Product
-	> Remove Product
-	> View Cart
-	> Get Total Items in Cart
+	> Add Product,
+	> Remove Product,
+	> View Cart.
+	> Get Total Items in Cart,
 	> Get Bill
