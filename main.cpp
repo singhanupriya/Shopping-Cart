@@ -87,8 +87,18 @@ class Product{
 	int m_productQuantity;
 	float m_productDiscount;
 	float m_productCostPerItem;
+	float m_totalProductCost;
 	
 	public:
+		
+		Product()
+		{
+			m_productID=0;
+			m_productName="";
+			m_productQuantity=0;
+			m_productDiscount=0.0;
+			m_productCostPerItem=0.0;
+		}
 	
 		Product(int productID, string productName, int productQuantity, float productDiscount, float productCostPerItem)
 		{
@@ -101,6 +111,8 @@ class Product{
 		
 		}
 		
+		
+		
 		void get_product_detail()
 		{
 			cout<<"Product Detail \n"
@@ -110,6 +122,16 @@ class Product{
 			<<"Product Discount(%): "<<m_productDiscount<<"\n"
 			<<"Product Cost per Item: "<<m_productCostPerItem<<"\n\n";
 		}
+		
+		int get_productID()
+		{
+			return m_productID;
+		}
+		
+		float get_total_product_cost()
+		{
+			m_totalProductCost=m_productQuantity * (m_productCostPerItem - m_productDiscount);
+		}
 	
 	
 	
@@ -118,16 +140,18 @@ class Product{
 };
 
 
-class Cart: protected Product{
+class Cart{
 	
-	//Product p;
+	
 	vector<Product> basket;
+	int itemsInCart=0;
 	
 	public:
 		
-		Cart(int productID, string productName, int productQuantity, float productDiscount, float productCostPerItem):Product(productID, productName,  productQuantity, productDiscount, productCostPerItem)
+		Cart()
 		{
-			//basket.push_back(p);
+			cout<<basket.size()<<"\n";
+			
 		}
 		
 		
@@ -136,6 +160,29 @@ class Cart: protected Product{
 		{
 			Product p(productID, productName, productQuantity, productDiscount, productCostPerItem);
 			basket.push_back(p);
+			itemsInCart++;
+			
+		}
+		
+		void remove_product(int productID)
+		{
+			int flag=0;
+			for(int i=0;i<basket.size();i++)
+			{
+				if(basket[i].get_productID()==productID)
+				{
+					cout<<"Product removed successfully\n\n";
+					//cout<<basket[i].size()<<"\n";
+					//basket[i].~Product();
+					flag=1;
+					break;
+				}
+				
+			}
+			if(flag==0)
+			{
+				cout<<"Item not in the cart\n\n";
+			}
 			
 		}
 		
@@ -148,6 +195,23 @@ class Cart: protected Product{
 				basket[i].get_product_detail();
 			}
 		}
+		
+		
+		void get_items_in_cart()
+		{
+			cout<<"Items in the cart: "<<itemsInCart<<"\n";
+		}
+		
+		float get_bill()
+		{
+			float sum=0;
+			for(int i=0;i<basket.size();i++)
+			{
+				sum=sum+ basket[i].get_total_product_cost();
+			}
+			return sum;
+		}
+		
 	
 	
 	
@@ -165,26 +229,18 @@ int main()
 	Customer cus("Shaumya",34,"M","7654321987","Platinum","Dynasty, Wakad, Pune");
 	cus.get_customer_detail();
 	
-	/*
-	Product p1(109,"Soap",2,1.5,32.0);
-	p1.get_product_detail();
-	
-	Product p2(323,"Chips",5,0,15.0);
-	p2.get_product_detail();
-	
-	Product p3(1092,"Shoes",1,3.4,576);
-	p3.get_product_detail();
 	
 	
-	Product p4(123,"Curd",2,0.5,25.0);
-	p4.get_product_detail();
-	
-	*/
-	
-	Cart c(109,"Soap",2,1.5,32.0);
+	Cart c;
 	c.add_product(123,"Curd",2,0.5,25.0);
 	c.add_product(323,"Chips",5,0,15.0);
+	c.add_product(1092,"Shoes",1,3.4,576);
 	c.view_cart();
+	c.remove_product(123);
+	c.view_cart();
+	c.get_items_in_cart();
+	
+	cout<<"Your total bill is "<<c.get_bill()<<"\n";
 	
 	
 	
